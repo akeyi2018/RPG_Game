@@ -1,16 +1,17 @@
 from kivy.app import App
 from kivy.uix.widget import Widget
-from kivy.graphics import Rectangle
 from kivy.core.window import Window
 from kivy.properties import NumericProperty, ReferenceListProperty
 from kivy.vector import Vector
 from kivy.clock import Clock
 from kivy.uix.image import Image
 from kivy.core.window import Window
+from kivy.uix.floatlayout import FloatLayout
 
 # 自作クラス
 from rpgmap import RPGMap
 from enemy import Enemy
+from show_status import PlayerStatusWidget
 
 # プレイヤーキャラクタークラス
 class Player(Image):
@@ -32,17 +33,30 @@ class RPGApp(Widget):
     def __init__(self, **kwargs):
         super(RPGApp, self).__init__(**kwargs)
 
+        # ステータスの配置
+        status_widget = PlayerStatusWidget()
+        self.add_widget(status_widget)
+
+        # Mapの配置
         self.rpg_map = RPGMap()
         self.add_widget(self.rpg_map)
+        # キーボード
         self.keyboard = Window.request_keyboard(self._keyboard_closed, self)
         self.keyboard.bind(on_key_down=self._on_keyboard_down)
         self.keyboard.bind(on_key_up=self._on_keyboard_up)
 
+        
+
+        # self.add_widget(self.status_widget.hp_label)
+        # self.add_widget(self.status_widget.mp_label)
+        
+        # Playerの配置
         self.player = Player(source='player_image.gif')
         self.player.size = (50, 50)
         self.player.pos = (50, 50)
         self.add_widget(self.player)
 
+        # 敵の配置
         self.place_enemy()
 
     def place_enemy(self):
@@ -90,6 +104,6 @@ class RPGGame(App):
         return game
 
 # ウィンドウのサイズを設定
-Window.size = (665, 535)
+Window.size = (665, 600)
 if __name__ == '__main__':
     RPGGame().run()
