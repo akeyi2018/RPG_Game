@@ -20,9 +20,9 @@ class RPGMap(Widget):
         ]
 
         self.tile_images = {
-            0: 'yama.png',  # 0に対応する画像のパス
-            1: 'sougen.png',  # 1に対応する画像のパス
-            2: 'miti.png'
+            0: './background_image/yama.png',  # 0に対応する画像のパス
+            1: './background_image/sougen.png',  # 1に対応する画像のパス
+            2: './background_image/miti.png'
         }
 
         self.update_map()

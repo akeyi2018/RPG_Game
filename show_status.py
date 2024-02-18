@@ -1,6 +1,5 @@
 from kivy.app import App
 from kivy.uix.floatlayout import FloatLayout
-from kivy.uix.widget import Widget
 from kivy.graphics import Color, Line, Rectangle
 from kivy.uix.label import Label
 
@@ -24,7 +23,7 @@ class PlayerStatusWidget(FloatLayout):
             self.rect = Rectangle(size=(150, 10), pos=(20, 885))
         
         # プレイヤーステータスを表示するラベルを作成し、キャンバス内に配置
-        font_path = 'NotoSansSC-Regular.ttf'
+        font_path = './font/NotoSansSC-Regular.ttf'
         self.player_name_label = Label(text="エンジニア Y", font_name=font_path,
                                     font_size=20, pos_hint={'center_x': 0.9, 'center_y': 8.85},
                                     halign='left')

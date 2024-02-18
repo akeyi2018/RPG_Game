@@ -9,12 +9,15 @@ class Enemy(Image):
         self.anim = Animation()
         self.randomize_animation()
         self.anim.repeat = True
-        # self.anim.bind(on_progress=self.check_collision)  # Animationの進行中に位置を監視し、衝突をチェック
         self.anim.start(self)
 
     def randomize_animation(self):
         # 3種類の敵のGIF画像パスをリストで定義
-        enemy_gifs = ['enemy_01.gif', 'enemy_02.gif', 'enemy_03.gif']
+        enemy_gifs = [
+            './enemy_image/enemy_01.gif',
+            './enemy_image/enemy_02.gif',
+            './enemy_image/enemy_03.gif'
+            ]
         random_gif = random.choice(enemy_gifs)  # ランダムに1つのGIF画像を選択
         self.source = random_gif  # 選択されたGIF画像を敵の画像として設定
         self.pos = (random.randint(50, 900), random.randint(50, 300))  # ランダムな位置に敵を配置

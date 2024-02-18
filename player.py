@@ -13,7 +13,7 @@ class Player(Image):
         super().__init__(**kwargs)
         self.size = (50, 50)  # デフォルトのサイズを設定
         self.pos = (50, 50)  # デフォルトの位置を設定
-        self.source = 'player_image.gif'  # デフォルトの画像ソースを設定
+        self.source = './player_image/player_image.gif'  # デフォルトの画像ソースを設定
 
     def move(self, rpg_map):
         # 次に移動する位置
