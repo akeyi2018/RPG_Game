@@ -37,13 +37,8 @@ class RPGApp(Widget):
         self.player = Player()
         self.add_widget(self.player)
 
-        # PlayerとEnemyが衝突した場合のメソッドをbindする
-        self.bind(on_touch_down=self.on_touch_down)
-
         # 敵の配置
         self.place_enemy()
-
-        
 
     def place_enemy(self):
         self.enemies = []  # Enemyインスタンスを格納するリスト
@@ -51,14 +46,6 @@ class RPGApp(Widget):
             enemy = Enemy(pos=(100 * (i + 1), 150))
             self.enemies.append(enemy)
             self.add_widget(enemy)
-
-    def on_touch_down(self, touch):
-        print(f'{self.player.pos},{self.enemies[0].pos}')
-        for enemy in self.enemies:
-            if self.player.collide_widget(enemy):
-                self.show_battle_popup()
-                return True  # 衝突した場合は処理を終了
-        self.player.velocity = Vector(touch.x - self.player.center_x, touch.y - self.player.center_y)
     
     def show_battle_popup(self):
         # ポップアップウィンドウを作成
