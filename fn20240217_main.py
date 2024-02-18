@@ -12,21 +12,8 @@ from kivy.uix.floatlayout import FloatLayout
 from rpgmap import RPGMap
 from enemy import Enemy
 from show_status import PlayerStatusWidget
-
-# プレイヤーキャラクタークラス
-class Player(Image):
-    velocity_x = NumericProperty(0)
-    velocity_y = NumericProperty(0)
-    velocity = ReferenceListProperty(velocity_x, velocity_y)
-
-    def move(self, rpg_map):
-        # 次に移動する位置
-        new_pos = Vector(*self.velocity) + self.pos
-
-        # 移動先が障害物でないかチェック
-        if rpg_map.is_valid_move(new_pos):
-            # 障害物でない場合→新しい位置にPlayerを移動する
-            self.pos = new_pos
+from player import Player
+from battle import BattleScreen
 
 # メインの画面
 class RPGApp(Widget):
@@ -40,34 +27,43 @@ class RPGApp(Widget):
         # Mapの配置
         self.rpg_map = RPGMap()
         self.add_widget(self.rpg_map)
+
         # キーボード
         self.keyboard = Window.request_keyboard(self._keyboard_closed, self)
         self.keyboard.bind(on_key_down=self._on_keyboard_down)
         self.keyboard.bind(on_key_up=self._on_keyboard_up)
-
-        
-
-        # self.add_widget(self.status_widget.hp_label)
-        # self.add_widget(self.status_widget.mp_label)
         
         # Playerの配置
-        self.player = Player(source='player_image.gif')
-        self.player.size = (50, 50)
-        self.player.pos = (50, 50)
+        self.player = Player()
         self.add_widget(self.player)
+
+        # PlayerとEnemyが衝突した場合のメソッドをbindする
+        self.bind(on_touch_down=self.on_touch_down)
 
         # 敵の配置
         self.place_enemy()
 
+        
+
     def place_enemy(self):
         self.enemies = []  # Enemyインスタンスを格納するリスト
-        for i in range(10): 
+        for i in range(1): 
             enemy = Enemy(pos=(100 * (i + 1), 150))
             self.enemies.append(enemy)
             self.add_widget(enemy)
 
     def on_touch_down(self, touch):
+        print(f'{self.player.pos},{self.enemies[0].pos}')
+        for enemy in self.enemies:
+            if self.player.collide_widget(enemy):
+                self.show_battle_popup()
+                return True  # 衝突した場合は処理を終了
         self.player.velocity = Vector(touch.x - self.player.center_x, touch.y - self.player.center_y)
+    
+    def show_battle_popup(self):
+        # ポップアップウィンドウを作成
+        battle_screen = BattleScreen()
+        battle_screen.open()
 
     def on_touch_up(self, touch):
         self.player.velocity = Vector(0, 0)

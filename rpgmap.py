@@ -58,7 +58,7 @@ class RPGMap(Widget):
         if self.map_data[map_y][map_x] == 0:
             return False
         # 壁でない場合
-        elif self.map_data[map_y][map_x] ==1:
+        else:
             return True
 
 class RPGApp(Widget):
