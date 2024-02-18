@@ -1,0 +1,47 @@
+<MainDisp>
+    FloatLayout:
+        size: root.size
+        canvas.before:
+            Color:
+                rgba: 0.7, 0.7, 0.7, 1
+            Rectangle:
+                size: self.size
+                pos: self.pos
+
+        Button:
+            id: open_button
+            text: 'click me!'
+            size_hint: (.5, .5)
+            pos_hint: {'center_x': .5, 'center_y': .5}
+            on_release: root.on_release()
+<PopupD>:
+    title: root.title
+    size_hint: None, None
+    size: 800, 750  # Popupウィンドウのサイズを設定
+
+
+    BoxLayout:
+        orientation: 'vertical'
+        BoxLayout:
+            id: content
+            orientation: 'horizontal'
+        Label:
+            text: 'Hero Attack goblin take 10 damages. \n goblin attack hero take 5 damages.'
+            font_size: 30
+           
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint_y: None  # 垂直方向のサイズを固定する
+            height: 50
+            Button:
+                text: 'Physical Attack'
+                font_size: 30 
+                
+            Button:
+                text: 'Magical Attack'
+                font_size: 30 
+                
+            Button:
+                text: 'escape ...'
+                font_size: 30 
+                on_release: root.dismiss()  # Popupを閉じる

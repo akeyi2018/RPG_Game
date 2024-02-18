@@ -1,0 +1,32 @@
+#: kivy 2.3.0
+<PopupD>
+    id: popup
+    title: 'test popup'
+    auto_dismiss: False
+    size_hint: (.8, .6)
+
+    BoxLayout:
+        orientation: 'vertical'
+
+        Label:
+            id: text1
+            text: 'text1'
+            text_size: self.size
+            halign: 'left'
+            valign: 'middle'
+            font_size: '14pt'
+            size_hint_y: 0.3
+
+        Label:
+            id: text2
+            text: 'text2'
+            text_size: self.size
+            halign: 'left'
+            valign: 'top'
+            size_hint_y: 0.5
+
+        Button:
+            id: close_button
+            size_hint_y: 0.2
+            text: 'Close'
+            on_release: root.dismiss()
