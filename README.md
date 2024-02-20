@@ -1,6 +1,8 @@
 RPG games are RPG Maker, and anyone can easily create them,but I have been using Pygame for a long time to make game screens, but I was frustrated once. 
 When I googled game creation for the first time in a long time, I found kivy, which I used to hate quite a bit. Moreover, it is easy to make a game, so I immediately made PongBall, but this time I will try to create an RPG game again.
 
+<img src="https://camo.qiitausercontent.com/a9516cc69e4c204f847c3df980a614280b0b898e/68747470733a2f2f71696974612d696d6167652d73746f72652e73332e61702d6e6f727468656173742d312e616d617a6f6e6177732e636f6d2f302f3537363038312f37323466376633662d613635382d376639642d663366372d3938376630663631306365382e706e67" width="400">
+
 ### ChatGPTを使いながらRPGゲームを作成する（その1）
 [Map画面の表示とPlayerの移動を可能とする](https://qiita.com/akeyi2018/items/d88835795d571b60f489)
 
