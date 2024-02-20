@@ -19,20 +19,19 @@
     separator_height: 0
     size_hint: None, None
     size: 800, 750  # Popupウィンドウのサイズを設定
-    
-    RelativeLayout:
-        Image:
-            source: "./background_image/pipo-battlebg002.jpg"
-            allow_stretch: True
-            keep_ratio: False
-            size: self.size
-            pos: self.pos
-           
+    canvas.before:
+        Rectangle:
+            Color:
+                rgba: 0, 1, 0, 1
+            
+    BoxLayout:
+        orientation: 'vertical'
+        
         BoxLayout:
             id: content
             orientation: 'horizontal'
-            pos_hint: {'top': 1.0}
-            pos: 10, 500
+            pos_hint: {'top': 0.4}
+            pos: 0, 30
             size_hint_y: 0.5
             
         Label:
@@ -64,3 +63,12 @@
                 text: 'escape ...'
                 font_size: 30 
                 on_release: root.dismiss()  # Popupを閉じる
+
+<CustomLayout>:
+    canvas.before:
+        Color:
+            hsv: 0, 1, 1
+            a: .5
+        Rectangle:
+            pos: self.pos
+            size: self.size
