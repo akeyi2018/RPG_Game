@@ -10,10 +10,10 @@ from kivy.uix.floatlayout import FloatLayout
 
 # 自作クラス
 from rpgmap import RPGMap
-from enemy import Enemy
+from enemy import EntryEnemy
 from show_status import PlayerStatusWidget
 from player import Player
-from battle import BattleScreen
+
 
 # メインの画面
 class RPGApp(Widget):
@@ -42,15 +42,12 @@ class RPGApp(Widget):
 
     def place_enemy(self):
         self.enemies = []  # Enemyインスタンスを格納するリスト
-        for i in range(1): 
-            enemy = Enemy(pos=(100 * (i + 1), 150))
+        for i in range(3): 
+            enemy = EntryEnemy(pos=(100 * (i + 1), 150))
             self.enemies.append(enemy)
             self.add_widget(enemy)
     
-    def show_battle_popup(self):
-        # ポップアップウィンドウを作成
-        battle_screen = BattleScreen()
-        battle_screen.open()
+    
 
     def on_touch_up(self, touch):
         self.player.velocity = Vector(0, 0)

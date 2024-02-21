@@ -2,14 +2,23 @@ from kivy.uix.image import Image
 from kivy.animation import Animation
 import random
 
-class Enemy(Image):
+# 自作クラス
+from battle import BattleScreen
+
+class EntryEnemy(Image):
+    # 静的なカウンタを使用して一意のIDを生成
+    enemy_id_counter =   0
+
     def __init__(self, **kwargs):
-        super(Enemy, self).__init__(**kwargs)
+        super(EntryEnemy, self).__init__(**kwargs)
         self.size = (50, 50)
         self.anim = Animation()
         self.randomize_animation()
         self.anim.repeat = True
         self.anim.start(self)
+        # IDを割り当て
+        self.id = EntryEnemy.enemy_id_counter
+        EntryEnemy.enemy_id_counter +=   1
 
     def randomize_animation(self):
         # 3種類の敵のGIF画像パスをリストで定義
@@ -24,8 +33,8 @@ class Enemy(Image):
         self.anim = Animation(
             pos=(random.randint(50, 900),
                  random.randint(50, 300)),
-            duration=5)  # ランダムな位置に移動するアニメーションを作成
-        self.anim.bind(on_complete=lambda *args: self.randomize_animation())
+            duration=60)  # ランダムな位置に移動するアニメーションを作成
+        # self.anim.bind(on_complete=lambda *args: self.randomize_animation())
         self.anim.start(self)
         self.anim.bind(on_progress=self.check_collision)
 
@@ -36,4 +45,26 @@ class Enemy(Image):
         if self.parent is not None and self.parent.player is not None:
             player = self.parent.player
             if self.collide_widget(player):
-                self.parent.show_battle_popup()
+                self.show_battle_popup()
+
+    def show_battle_popup(self):
+        # アニメーションを停止する
+        self.anim.stop(self)
+        
+        # check_collision  メソッドのアニメーションを停止
+        self.anim.unbind(on_progress=self.check_collision)
+        # ポップアップウィンドウを作成
+        battle_screen = BattleScreen(self)
+        battle_screen.open()
+        battle_screen.bind(on_dismiss=self.resume_animation)
+
+    def resume_animation(self, instance):
+        # self.remove_widget(self)
+        self.anim.start(self)
+        # self.anim.bind(on_progress=self.check_collision)
+
+    def remove_enemy(self):
+        # 敵を管理しているウィジェットから敵を削除する処理を実装
+        if self.parent is not None:
+            self.parent.remove_widget(self)
+
