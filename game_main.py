@@ -40,14 +40,26 @@ class RPGApp(Widget):
         # 敵の配置
         self.place_enemy()
 
+       
+        # self.bind(on_enemy_defeated=self.respawn_enemy)
+
+    def respawn_enemy(self, instance):
+        # 敵が倒されたときに新しい敵を生成して配置する
+        enemy = EntryEnemy(pos=(100 * (len(self.enemies) +  1),  150))
+        enemy.bind(on_enemy_defeated=self.respawn_enemy)
+        self.enemies.append(enemy)
+        self.add_widget(enemy)
+        
+
     def place_enemy(self):
         self.enemies = []  # Enemyインスタンスを格納するリスト
         for i in range(3): 
             enemy = EntryEnemy(pos=(100 * (i + 1), 150))
+            
+            # 敵が倒されたときに再生成するためのリスナーを追加
+            enemy.bind(on_enemy_defeated=self.respawn_enemy)
             self.enemies.append(enemy)
             self.add_widget(enemy)
-    
-    
 
     def on_touch_up(self, touch):
         self.player.velocity = Vector(0, 0)

@@ -1,16 +1,19 @@
 from kivy.uix.image import Image
 from kivy.animation import Animation
 import random
+from kivy.event import EventDispatcher
 
 # 自作クラス
 from battle import BattleScreen
 
-class EntryEnemy(Image):
+class EntryEnemy(Image, EventDispatcher):
     # 静的なカウンタを使用して一意のIDを生成
     enemy_id_counter =   0
 
     def __init__(self, **kwargs):
         super(EntryEnemy, self).__init__(**kwargs)
+        # 敵が倒されるイベントを登録しておく
+        self.register_event_type('on_enemy_defeated')
         self.size = (50, 50)
         self.anim = Animation()
         self.randomize_animation()
@@ -63,8 +66,14 @@ class EntryEnemy(Image):
         self.anim.start(self)
         # self.anim.bind(on_progress=self.check_collision)
 
+    def on_enemy_defeated(self):
+        print('敵が倒された')
+        pass
+
     def remove_enemy(self):
         # 敵を管理しているウィジェットから敵を削除する処理を実装
         if self.parent is not None:
             self.parent.remove_widget(self)
+            # 敵が倒されたことを通知
+            self.dispatch('on_enemy_defeated')
 
