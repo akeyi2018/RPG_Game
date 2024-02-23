@@ -1,6 +1,5 @@
 import random, os
 
-
 class Enemy():
     def __init__(self) -> None:
         self.root_path = './enemy_image'

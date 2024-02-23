@@ -40,27 +40,9 @@ class EntryEnemy(Image, EventDispatcher):
         #  アニメーションを開始
         self.anim.start(self)
         self.anim.bind(on_progress=self.check_collision)
-        
-        # self.sq_01.bind(on_complete=self.on_animation_complete)  #  アニメーションが完了したときに呼び出されるメソッドをバインド
-        # self.sq_01.start(self)
-        # self.sq_01.bind(on_progress=self.check_collision)
-
-    # 配置した敵を動かす
-    def move_enemy_animation(self, sr):
-        self.source = sr
-        self.anim = Animation(
-            pos=(random.randint(50, 900),
-                 random.randint(50, 300)),
-            duration=10) 
-        self.anim.bind(on_complete=self.on_animation_complete)  #  アニメーションが完了したときに呼び出されるメソッドをバインド
-        self.anim.start(self)
-        self.anim.bind(on_progress=self.check_collision)
 
     def on_animation_complete(self, animation, instance):
         if self.pop_up_flag != 1:
-        #     print("Animation completed:", datetime.now(), self.id)
-        #     self.move_enemy_animation(self.source)
-        # self.randomize_animation()
             print("Animation completed:", datetime.now(), self.id)
             self.move_enemy_animation_fix()
         
@@ -98,9 +80,6 @@ class EntryEnemy(Image, EventDispatcher):
     def resume_animation(self, instance):
         print(self.enemy_id_counter)
         pass
-        # self.remove_widget(self)
-        # self.anim.start(self)
-        # self.anim.bind(on_progress=self.check_collision)
 
     def on_enemy_defeated(self):
         self.enemy_id_counter -= 1

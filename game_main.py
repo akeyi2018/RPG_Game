@@ -52,7 +52,6 @@ class RPGApp(Widget, EventDispatcher):
                                source=random_gif,
                                enemy_name=enemy_name)
             # 新しい敵が生成されたらバインドする
-            # enemy.bind(on_enemy_defeated=self.respawn_enemy)
             enemy.bind(on_enemy_defeated= lambda instance: self.respawn_enemy(enemy))
             enemy.move_enemy_animation_fix()
             self.enemies.append(enemy)
