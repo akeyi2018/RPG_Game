@@ -29,12 +29,11 @@ class BattleScreen(Popup):
         super(BattleScreen, self).__init__(**kwargs)
         self.title = ''
         self.entry_enemy_instance = entry_enemy_instance
-        # print(self.entry_enemy_instance.source)
         self.images = [self.entry_enemy_instance.source]
-        self.labels = ['aaa']
+        self.labels = [self.entry_enemy_instance.enemy_name]
 
     def on_dismiss(self):
-        print('close')
+        # print('close')
         self.entry_enemy_instance.remove_enemy()
         # enemy = self.entry_enemy_instance.enemy
         # self.entry_enemy_instance.anim.start(self.entry_enemy_instance)

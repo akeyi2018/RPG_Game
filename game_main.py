@@ -13,6 +13,7 @@ from rpgmap import RPGMap
 from enemy import EntryEnemy
 from show_status import PlayerStatusWidget
 from player import Player
+from enemy_maneger import Enemy
 
 
 # メインの画面
@@ -38,28 +39,45 @@ class RPGApp(Widget):
         self.add_widget(self.player)
 
         # 敵の配置
-        self.place_enemy()
+        self.place_enemy_fix()
+    
+    def place_enemy_fix(self):
+        self.enemies = []  # Enemyインスタンスを格納するリスト
+        for i in range(6):
+            # 敵のGIF
+            enemy_name, random_gif = Enemy().generate_random_enemy()
+            enemy = EntryEnemy(pos=(100 * (i + 2)*1, 200),
+                               source=random_gif,
+                               enemy_name=enemy_name)
+            enemy.move_enemy_animation_fix()
+            self.enemies.append(enemy)
+            enemy.dispatch('on_enemy_generated')
+            self.add_widget(enemy)
 
-       
-        # self.bind(on_enemy_defeated=self.respawn_enemy)
-
+    # 敵再配置（敵が倒されたときに新しい敵を生成して配置する）
     def respawn_enemy(self, instance):
+
+        random_gif = Enemy().generate_random_enemy() 
         # 敵が倒されたときに新しい敵を生成して配置する
         enemy = EntryEnemy(pos=(100 * (len(self.enemies) +  1),  150))
-        enemy.bind(on_enemy_defeated=self.respawn_enemy)
-        self.enemies.append(enemy)
-        self.add_widget(enemy)
-        
 
-    def place_enemy(self):
-        self.enemies = []  # Enemyインスタンスを格納するリスト
-        for i in range(3): 
-            enemy = EntryEnemy(pos=(100 * (i + 1), 150))
-            
-            # 敵が倒されたときに再生成するためのリスナーを追加
-            enemy.bind(on_enemy_defeated=self.respawn_enemy)
-            self.enemies.append(enemy)
-            self.add_widget(enemy)
+        # 敵が生成されたときにバインドする
+        enemy.bind(on_enemy_generated=self.generate_enemy)
+        # 新しい敵が生成されたらバインドする
+        enemy.bind(on_enemy_defeated=self.respawn_enemy)
+        # 新しい敵を生成して配置する
+        self.enemies.append(enemy)
+        enemy.dispatch('on_enemy_generated')
+        
+        enemy.move_enemy_animation(random_gif)
+        self.add_widget(enemy)
+
+    def generate_enemy(self, instance):
+        pass
+
+    def stop_all_enemy_animations(self):
+        for enemy in self.enemies:
+            enemy.stop_animation()
 
     def on_touch_up(self, touch):
         self.player.velocity = Vector(0, 0)
