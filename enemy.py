@@ -3,6 +3,7 @@ from kivy.animation import Animation, Sequence
 import random
 from kivy.event import EventDispatcher
 from datetime import datetime
+from kivy.clock import Clock
 
 # 自作クラス
 from battle import BattleScreen
@@ -115,5 +116,5 @@ class EntryEnemy(Image, EventDispatcher):
         if self.parent is not None:
             self.parent.remove_widget(self)
             # 敵が倒されたことを通知
-            self.dispatch('on_enemy_defeated')
+            Clock.schedule_once(lambda dt: self.dispatch('on_enemy_defeated'), 10)
 

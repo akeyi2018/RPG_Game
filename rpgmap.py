@@ -9,7 +9,7 @@ class RPGMap(Widget):
         # self.size = (15, 15)  # マップのサイズを設定
         self.tile_size = 50 # タイルのサイズを設定
         self.map_data = [
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 0],
             [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 0],
             [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 0],
             [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 0],
@@ -17,13 +17,14 @@ class RPGMap(Widget):
             [0, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 2, 2, 1, 1, 1, 1, 0],
             [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 0],
             [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 0]
         ]
 
         self.tile_images = {
             0: './background_image/yama.png',  # 0に対応する画像のパス
             1: './background_image/sougen.png',  # 1に対応する画像のパス
-            2: './background_image/miti.png'
+            2: './background_image/miti.png',
+            3: './background_image/floor_brick.png'
         }
 
         self.update_map()
@@ -59,6 +60,9 @@ class RPGMap(Widget):
         if self.map_data[map_y][map_x] == 0:
             return False
         # 壁でない場合
+        # elif self.map_data[map_y][map_x] == 3:
+        #     if len(self.parent.enemies) == 0:
+        #         self.parent.dispatch('on_generate_new_enemys')
         else:
             return True
 

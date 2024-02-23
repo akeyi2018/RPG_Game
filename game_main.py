@@ -7,6 +7,7 @@ from kivy.clock import Clock
 from kivy.uix.image import Image
 from kivy.core.window import Window
 from kivy.uix.floatlayout import FloatLayout
+from kivy.event import EventDispatcher
 
 # 自作クラス
 from rpgmap import RPGMap
@@ -17,10 +18,10 @@ from enemy_maneger import Enemy
 
 
 # メインの画面
-class RPGApp(Widget):
+class RPGApp(Widget, EventDispatcher):
     def __init__(self, **kwargs):
         super(RPGApp, self).__init__(**kwargs)
-
+        self.register_event_type('on_generate_new_enemys')
         # ステータスの配置
         status_widget = PlayerStatusWidget()
         self.add_widget(status_widget)
@@ -39,37 +40,52 @@ class RPGApp(Widget):
         self.add_widget(self.player)
 
         # 敵の配置
+        self.enemys_num = 3
         self.place_enemy_fix()
     
     def place_enemy_fix(self):
         self.enemies = []  # Enemyインスタンスを格納するリスト
-        for i in range(6):
+        for i in range(self.enemys_num):
             # 敵のGIF
             enemy_name, random_gif = Enemy().generate_random_enemy()
             enemy = EntryEnemy(pos=(100 * (i + 2)*1, 200),
                                source=random_gif,
                                enemy_name=enemy_name)
+            # 新しい敵が生成されたらバインドする
+            # enemy.bind(on_enemy_defeated=self.respawn_enemy)
+            enemy.bind(on_enemy_defeated= lambda instance: self.respawn_enemy(enemy))
             enemy.move_enemy_animation_fix()
             self.enemies.append(enemy)
+            
             enemy.dispatch('on_enemy_generated')
             self.add_widget(enemy)
+
+    def on_generate_new_enemys(self):
+        # print('on_generate_new_enemys')
+        for enemy in self.enemies:
+            self.remove_widget(enemy)
+        self.place_enemy_fix()
 
     # 敵再配置（敵が倒されたときに新しい敵を生成して配置する）
     def respawn_enemy(self, instance):
 
-        random_gif = Enemy().generate_random_enemy() 
+        print(f'x:{instance.x}: y:{instance.y}')
+        print(f'play_x:{self.player.x}:play_y:{self.player.y}')
+        
+        enemy_name, random_gif = Enemy().generate_random_enemy() 
         # 敵が倒されたときに新しい敵を生成して配置する
-        enemy = EntryEnemy(pos=(100 * (len(self.enemies) +  1),  150))
+        enemy = EntryEnemy(pos=(self.player.x - 80,  200),
+                           source=random_gif,
+                           enemy_name=enemy_name)
 
         # 敵が生成されたときにバインドする
         enemy.bind(on_enemy_generated=self.generate_enemy)
         # 新しい敵が生成されたらバインドする
-        enemy.bind(on_enemy_defeated=self.respawn_enemy)
+        enemy.bind(on_enemy_defeated= lambda instance: self.respawn_enemy(enemy))
+        enemy.move_enemy_animation_fix()
         # 新しい敵を生成して配置する
         self.enemies.append(enemy)
         enemy.dispatch('on_enemy_generated')
-        
-        enemy.move_enemy_animation(random_gif)
         self.add_widget(enemy)
 
     def generate_enemy(self, instance):
