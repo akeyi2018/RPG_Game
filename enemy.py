@@ -1,6 +1,6 @@
 from kivy.uix.image import Image
 from kivy.animation import Animation, Sequence
-import random
+import random, json
 from kivy.event import EventDispatcher
 from datetime import datetime
 from kivy.clock import Clock
@@ -12,15 +12,19 @@ class EntryEnemy(Image, EventDispatcher):
     # 静的なカウンタを使用して一意のIDを生成
     enemy_id_counter =   0
 
-    def __init__(self, enemy_name, **kwargs):
+    def __init__(self, json_data, **kwargs):
         super(EntryEnemy, self).__init__(**kwargs)
         # 敵が倒されるイベントを登録しておく
         self.register_event_type('on_enemy_defeated')
         self.register_event_type('on_enemy_generated')
         self.size = (50, 50)
         self.pop_up_flag = 0
-        # 敵の名前
-        self.enemy_name = enemy_name
+        # self.json_data = json.dumps(json_data)
+        # print('OK:', json_data)
+        # jsonデータを辞書データに変換
+        self.status = dict(json_data)
+        print('OK', self.status)
+
         # アニメーション動作秒数
         self.move_animation_time = 3
         # IDを割り当て

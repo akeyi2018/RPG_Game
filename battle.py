@@ -10,6 +10,7 @@ from kivy.uix.label import Label
 from kivy.properties import StringProperty, ListProperty
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.image import Image
+import os
 
 kivy.require('2.3.0')
 Config.set('graphics', 'width', '600')
@@ -34,10 +35,14 @@ class BattleScreen(Popup):
     # def __init__(self, title, labels, image_paths, **kwargs):
     def __init__(self, entry_enemy_instance, **kwargs):
         super(BattleScreen, self).__init__(**kwargs)
+        self.image_path = './enemy_image'
         self.title = ''
         self.entry_enemy_instance = entry_enemy_instance
-        self.images = [self.entry_enemy_instance.source]
-        self.labels = [self.entry_enemy_instance.enemy_name]
+        self.enemy_status = entry_enemy_instance.status
+        self.enemy_image = os.path.join(os.getcwd(), self.image_path, self.enemy_status['IMG'])
+        # print(self.enemy_image)
+        # image 表示用
+        self.images = [self.enemy_image]
 
     def on_dismiss(self):
         # print('close')
@@ -66,7 +71,9 @@ class BattleScreen(Popup):
   
 
     def on_open(self):
-        for text, source in zip(self.labels, self.images):
+        # 敵の名前
+        self.ids.battle_message.text = f'{self.enemy_status["name"]}が現れました \n'
+        for source in self.images:
             inner_layout = BoxLayout(
                 orientation='vertical', height=150)
             
@@ -75,12 +82,20 @@ class BattleScreen(Popup):
 
             self.ids.content.add_widget(inner_layout)
         
+    def finish_battle(self):
 
-    def del_monster(self):
-        # モンスターを削除
+        # モンスターを倒したメッセージ表示
+        new_message = f'{self.enemy_status["name"]}を倒しました \n'
+        self.reconstruct_battle_message(new_message)
+
         # モンスターが存在する場合
         if len(self.ids.content.children) > 0:
+            # モンスターを削除
             self.ids.content.remove_widget(self.ids.content.children[0])
+
+        # 戦闘終了ボタンの表示
+        self.ids.finish_battle_button.text = '戦闘終了'
+        self.ids.finish_battle_button.disabled = False
     
     def reconstruct_battle_message(self, new_message):
         current_message = self.ids.battle_message.text
@@ -91,10 +106,16 @@ class BattleScreen(Popup):
         self.ids.battle_message.text = '\n'.join(lines) + new_message
 
     def physical_attack(self):
-        #   ここに物理攻撃時の処理を記述します。
-        print("Physical attack executed!")
-        new_message = 'Physical attack executed. \n'
-        self.reconstruct_battle_message(new_message)
+        # ここに物理攻撃時の処理を記述します。
+        attack_str = 8
+        if len(self.ids.content.children) > 0:
+            self.enemy_status['HP'] -= attack_str
+            if self.enemy_status['HP'] > 0:
+                new_message = f'{self.enemy_status["name"]}に{attack_str}のダメージを与えました \n'
+                self.reconstruct_battle_message(new_message)
+            else:
+                # 戦闘終了処理
+                self.finish_battle()    
         
     def magical_attack(self):
         #   ここに魔法攻撃時の処理を記述します。
@@ -110,18 +131,11 @@ class MainDisp(Widget):
         super(MainDisp, self).__init__(**kwargs)
 
     def on_release(self):
-        image_paths = [
-            './enemy_image/enemy_01.gif',
-            './enemy_image/enemy_02.gif',
-            './enemy_image/enemy_03.gif'
-            ]
-        enemy_name_list = ['goblin',
-                           'wizard',
-                           'Snake Woman'
-                        ]
         
-        enemy_name, random_gif = Enemy().generate_random_enemy()
-        enemy = EntryEnemy(source=random_gif, enemy_name=enemy_name)
+        json_data = Enemy().generate_random_enemy()
+        enemy = EntryEnemy(json_data)
+
+        print(enemy.status)
 
         self.popup = BattleScreen(entry_enemy_instance=enemy)
         self.popup.open()

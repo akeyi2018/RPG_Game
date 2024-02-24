@@ -76,34 +76,55 @@
             
         Label:
             id: battle_message
-            text: 'Monsters have appeared.\n'
             font_size:  25
             text_size: self.size
             size_hint_y: 0.3
             height:  5 * self.font_size
             valign: 'top'
-            pos_hint: {'top':  0.4}  #  親ウィジェットの上端に寄せる
+            pos_hint: {'top':  0.4, 'x': 0.1}  #  親ウィジェットの上端に寄せる
             pos:  0,  10  #  親ウィジェットの左上から20ピクセル下に配置
+            canvas.before:
+                Color:
+                    rgba:  0,  0,  0,  1
+                Rectangle:
+                    pos: (0,80)
+                    size: (self.width, self.height)
+                Color:
+                    rgba:  1,  1,  1,  1  # Red color for the line
+                Line:
+                    width: 2
+                    points: [(2,  540), (self.width -  590,  540)]
+                Line:
+                    width: 2
+                    points: [(2,  660), (self.width -  590,  660)] 
+                Line:
+                    width: 2
+                    points: [(2,  660), (2,  540)] 
+                Line:
+                    width: 2
+                    points: [(self.width -  590,  660), (self.width -  590,  540)]
 
         BoxLayout:
             orientation: 'horizontal'
             size_hint_y: 0.1  # 垂直方向のサイズを固定する
             height: 10
             Button:
-                text: 'Physical Attack'
+                text: '攻撃'
                 font_size: 30
                 on_release: root.physical_attack() 
                 
             Spinner:
                 id: spinner_id
-                text: 'まほう'
+                text: '魔法'
                 font_size: 30
                 values: ['ホイミ', 'メラ']
                 on_text: root.spinner_clicked(spinner_id.text)
                 
             Button:
-                text: 'escape ...'
-                font_size: 30 
+                id: finish_battle_button
+                text: ''
+                font_size: 30
+                disabled: True 
                 on_release: root.dismiss()  # Popupを閉じる
 
            
