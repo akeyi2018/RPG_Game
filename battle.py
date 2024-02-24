@@ -14,7 +14,14 @@ from kivy.uix.image import Image
 kivy.require('2.3.0')
 Config.set('graphics', 'width', '600')
 Config.set('graphics', 'height', '500')
+from kivy.core.text import LabelBase, DEFAULT_FONT
+from kivy.resources import resource_add_path
+resource_add_path('./font')
+LabelBase.register(DEFAULT_FONT, 'NotoSansSC-Regular.ttf')
 Builder.load_file('popup.kv')
+
+from enemy import EntryEnemy
+from enemy_maneger import Enemy
 
 class CustomLayout(BoxLayout):
     pass
@@ -37,20 +44,37 @@ class BattleScreen(Popup):
         self.entry_enemy_instance.remove_enemy()
         # enemy = self.entry_enemy_instance.enemy
         # self.entry_enemy_instance.anim.start(self.entry_enemy_instance)
-        
+
+    def spinner_clicked(self,text):
+        if text == 'ホイミ':
+            self.handle_item1()
+        elif text == 'メラ':
+            self.handle_item2()
+        self.ids.spinner_id.text = 'まほう'
+
+    def handle_item1(self):
+        # 項目1を選択した場合の処理
+        # print("ホイミを唱えました")
+        new_message = 'ホイミを唱えました \n'
+        self.reconstruct_battle_message(new_message)
+
+    def handle_item2(self):
+        # 項目2を選択した場合の処理
+        print("メラを唱えました")
+        new_message = 'メラを唱えました \n'
+        self.reconstruct_battle_message(new_message)
+  
 
     def on_open(self):
         for text, source in zip(self.labels, self.images):
             inner_layout = BoxLayout(
                 orientation='vertical', height=150)
             
-            label = Label(text=text, height=100)
-            inner_layout.add_widget(label)
-            
             image = Image(source=source)
             inner_layout.add_widget(image)
 
             self.ids.content.add_widget(inner_layout)
+        
 
     def del_monster(self):
         # モンスターを削除
@@ -95,7 +119,11 @@ class MainDisp(Widget):
                            'wizard',
                            'Snake Woman'
                         ]
-        self.popup = BattleScreen('', enemy_name_list, image_paths)
+        
+        enemy_name, random_gif = Enemy().generate_random_enemy()
+        enemy = EntryEnemy(source=random_gif, enemy_name=enemy_name)
+
+        self.popup = BattleScreen(entry_enemy_instance=enemy)
         self.popup.open()
 
 class MainDispApp(App):

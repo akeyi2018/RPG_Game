@@ -6,7 +6,7 @@ from datetime import datetime
 from kivy.clock import Clock
 
 # 自作クラス
-from battle import BattleScreen
+# from battle import BattleScreen
 
 class EntryEnemy(Image, EventDispatcher):
     # 静的なカウンタを使用して一意のIDを生成
