@@ -19,12 +19,8 @@ class EntryEnemy(Image, EventDispatcher):
         self.register_event_type('on_enemy_generated')
         self.size = (50, 50)
         self.pop_up_flag = 0
-        # self.json_data = json.dumps(json_data)
-        # print('OK:', json_data)
         # jsonデータを辞書データに変換
         self.status = dict(json_data)
-        print('OK', self.status)
-
         # アニメーション動作秒数
         self.move_animation_time = 3
         # IDを割り当て
