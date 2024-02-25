@@ -26,7 +26,7 @@ class RPGMap(Widget):
             2: './background_image/miti.png',
             3: './background_image/floor_brick.png'
         }
-
+        
         self.update_map()
 
     def update_map(self):

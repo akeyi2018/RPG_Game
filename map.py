@@ -45,9 +45,7 @@ class Map(Widget):
                     tile_image = ImageButton(text=f'{tile}',source=tile_image_path)
                     tile_image.size = (self.tile_size, self.tile_size)
                     tile_image.pos = (x * self.tile_size, (len(self.map_data) - 1 - y) * self.tile_size)
-                    # print(tile_image.pos)
                     self.add_widget(tile_image)
-                    # break
 
     def is_valid_move(self):
         move_list = ['0','1']
@@ -61,10 +59,6 @@ class Map(Widget):
                     return False
                 else:
                     return False
-               
-                  
-        
-     
 
 class RPGApp(Widget):
     def __init__(self, **kwargs):
