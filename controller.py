@@ -32,8 +32,8 @@ class GameController(GridLayout):
         pygame.event.pump()
 
         # ゲームパッドのボタンの状態を取得
-        button_a = self.gamepad.get_button(2)
-        button_b = self.gamepad.get_button(3)
+        button_a = self.gamepad.get_button(0)
+        button_b = self.gamepad.get_button(1)
 
         # ゲームパッドのスティックの状態を取得
         axis_x = self.gamepad.get_axis(0)
