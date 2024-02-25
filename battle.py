@@ -21,8 +21,8 @@ resource_add_path('./font')
 LabelBase.register(DEFAULT_FONT, 'NotoSansSC-Regular.ttf')
 Builder.load_file('popup.kv')
 
-from enemy import EntryEnemy
-from enemy_maneger import Enemy
+# from enemy import EntryEnemy
+# from enemy_maneger import Enemy
 
 class CustomLayout(BoxLayout):
     pass
@@ -40,15 +40,12 @@ class BattleScreen(Popup):
         self.entry_enemy_instance = entry_enemy_instance
         self.enemy_status = entry_enemy_instance.status
         self.enemy_image = os.path.join(os.getcwd(), self.image_path, self.enemy_status['IMG'])
-        # print(self.enemy_image)
         # image 表示用
         self.images = [self.enemy_image]
 
     def on_dismiss(self):
         # print('close')
         self.entry_enemy_instance.remove_enemy()
-        # enemy = self.entry_enemy_instance.enemy
-        # self.entry_enemy_instance.anim.start(self.entry_enemy_instance)
 
     def spinner_clicked(self,text):
         if text == 'ホイミ':
@@ -107,7 +104,7 @@ class BattleScreen(Popup):
 
     def physical_attack(self):
         # ここに物理攻撃時の処理を記述します。
-        attack_str = 8
+        attack_str = 100
         if len(self.ids.content.children) > 0:
             self.enemy_status['HP'] -= attack_str
             if self.enemy_status['HP'] > 0:

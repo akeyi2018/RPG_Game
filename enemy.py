@@ -4,9 +4,10 @@ import random, json
 from kivy.event import EventDispatcher
 from datetime import datetime
 from kivy.clock import Clock
+import os
 
 # 自作クラス
-# from battle import BattleScreen
+from battle import BattleScreen
 
 class EntryEnemy(Image, EventDispatcher):
     # 静的なカウンタを使用して一意のIDを生成
@@ -19,8 +20,11 @@ class EntryEnemy(Image, EventDispatcher):
         self.register_event_type('on_enemy_generated')
         self.size = (50, 50)
         self.pop_up_flag = 0
+        self.image_path = './enemy_image'
         # jsonデータを辞書データに変換
         self.status = dict(json_data)
+        # 画像を取り出す
+        self.source = os.path.join(os.getcwd(), self.image_path, self.status['IMG'])
         # アニメーション動作秒数
         self.move_animation_time = 3
         # IDを割り当て
@@ -87,7 +91,7 @@ class EntryEnemy(Image, EventDispatcher):
         pass
 
     def on_enemy_generated(self):
-        print(f'{self.enemy_name}が生成されました')
+        print(f'{self.status["name"]}が生成されました')
         pass
 
     def remove_enemy(self):

@@ -10,7 +10,7 @@ from kivy.uix.floatlayout import FloatLayout
 from kivy.event import EventDispatcher
 
 # 自作クラス
-from map import Map as RPGMap
+from map import Map
 from enemy import EntryEnemy
 from show_status import PlayerStatusWidget
 from player import Player
@@ -27,7 +27,7 @@ class RPGApp(Widget, EventDispatcher):
         self.add_widget(status_widget)
 
         # Mapの配置
-        self.rpg_map = RPGMap()
+        self.rpg_map = Map()
         self.add_widget(self.rpg_map)
 
         # キーボード
@@ -40,8 +40,8 @@ class RPGApp(Widget, EventDispatcher):
         self.add_widget(self.player)
 
         # 敵の配置
-        self.enemys_num = 3
-        self.place_enemy_fix()
+        # self.enemys_num = 3
+        # self.place_enemy_fix()
     
     def place_enemy_fix(self):
         self.enemies = []  # Enemyインスタンスを格納するリスト
@@ -120,6 +120,7 @@ class RPGApp(Widget, EventDispatcher):
         self.keyboard.unbind(on_key_up=self._on_keyboard_up)
         self.keyboard = None
 
+    # キーボードがupした場合、停止する
     def _on_keyboard_up(self, keyboard, keycode):
         if keycode[1] == 'up' or keycode[1] == 'down':
             self.player.velocity_y = 0

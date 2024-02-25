@@ -1,0 +1,49 @@
+# mymap.kv
+
+<MyMap>:
+    spacing: 5
+    padding: 5
+    canvas.before:
+        Color:
+            rgba: 0.1, 0.1, 0.1, 1
+        Rectangle:
+            size: self.size
+            pos: self.pos
+    ImageButton:
+        source: './background_image/floor_brick.png'  # 画像のパスを設定
+    GridLayout:
+        ImageButton:
+            source: './background_image/floor_brick.png'  # 画像のパスを設定
+        Button:
+            text: 'Tile 2'
+        Button:
+            text: 'Tile 3'
+        Button:
+            text: 'Tile 4'
+        
+        Button:
+            text: 'Tile 5'
+        Button:
+            text: 'Tile 6'
+        Button:
+            text: 'Tile 7'
+        Button:
+            text: 'Tile 8'
+        
+        Button:
+            text: 'Tile 9'
+        Button:
+            text: 'Tile 10'
+        Button:
+            text: 'Tile 11'
+        Button:
+            text: 'Tile 12'
+        
+        Button:
+            text: 'Tile 13'
+        Button:
+            text: 'Tile 14'
+        Button:
+            text: 'Tile 15'
+        Button:
+            text: 'Tile 16'

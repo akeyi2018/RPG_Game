@@ -14,7 +14,7 @@ class PongPaddle(Widget):
             vx, vy = ball.velocity
             offset = (ball.center_y - self.center_y) / (self.height / 2)
             bounced = Vector(-1 * vx, vy)
-            vel = bounced * 1.5
+            vel = bounced * 1.1
             ball.velocity = vel.x, vel.y + offset
 
 
@@ -68,7 +68,7 @@ class PongApp(App):
     def build(self):
         game = PongGame()
         game.serve_ball()
-        # Clock.schedule_interval(game.update, 1.0 / 360.0)
+        Clock.schedule_interval(game.update, 1.0 / 360.0)
         return game
 
 
